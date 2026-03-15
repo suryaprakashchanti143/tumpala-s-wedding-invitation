@@ -2,14 +2,39 @@
    INITIALIZE AOS (Animate On Scroll)
    ============================================ */
 
-document.addEventListener('DOMContentLoaded', function() {
+let isMobileAOSMode = null;
+
+function initAOSForViewport() {
+    const isMobileViewport = window.innerWidth <= 768;
+
+    if (isMobileAOSMode === isMobileViewport) {
+        return;
+    }
+
+    isMobileAOSMode = isMobileViewport;
+
+    if (typeof AOS === 'undefined') {
+        console.warn('AOS library is unavailable, skipping scroll animations.');
+        return;
+    }
+
     AOS.init({
-        duration: 800,
+        duration: isMobileViewport ? 600 : 800,
         easing: 'ease-in-out-cubic',
-        once: false,
-        mirror: true,
-        offset: 120
+        once: isMobileViewport,
+        mirror: !isMobileViewport,
+        offset: isMobileViewport ? 80 : 120
     });
+
+    if (typeof AOS.refreshHard === 'function') {
+        AOS.refreshHard();
+    } else if (typeof AOS.refresh === 'function') {
+        AOS.refresh();
+    }
+}
+
+document.addEventListener('DOMContentLoaded', function() {
+    initAOSForViewport();
 
     // Initialize other features
     initNavigation();
@@ -326,15 +351,7 @@ window.addEventListener('load', () => {
    ============================================ */
 
 function handleResponsive() {
-    if (window.innerWidth <= 768) {
-        AOS.reset();
-        AOS.init({
-            duration: 600,
-            easing: 'ease-in-out-cubic',
-            once: true,
-            offset: 80
-        });
-    }
+    initAOSForViewport();
 }
 
 window.addEventListener('resize', handleResponsive);
@@ -430,6 +447,14 @@ function initCelebration() {
     }
 
     console.log('✅ Celebration button found');
+
+    if (celebrationBtn.dataset.celebrationBound === 'true') {
+        console.log('Celebration button already initialized');
+        return;
+    }
+
+    celebrationBtn.dataset.celebrationBound = 'true';
+    celebrationBtn.type = 'button';
 
     // Create celebration container if it doesn't exist
     if (!celebrationContainer) {
