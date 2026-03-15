@@ -420,13 +420,16 @@ window.addEventListener('scroll', optimizedScroll);
    ============================================ */
 
 function initCelebration() {
+    console.log('🔧 initCelebration() starting...');
     const celebrationBtn = document.getElementById('celebrationBtn');
     let celebrationContainer = document.getElementById('celebrationContainer');
 
     if (!celebrationBtn) {
-        console.warn('❌ Celebration button not found');
+        console.error('❌ CRITICAL: Celebration button #celebrationBtn NOT FOUND');
         return;
     }
+
+    console.log('✅ Celebration button found');
 
     // Create celebration container if it doesn't exist
     if (!celebrationContainer) {
@@ -444,12 +447,15 @@ function initCelebration() {
         `;
         document.body.appendChild(celebrationContainer);
         console.log('✅ Celebration container created');
+    } else {
+        console.log('✅ Celebration container already exists');
     }
 
     // Handle click event
     celebrationBtn.addEventListener('click', function(e) {
         e.preventDefault();
         e.stopPropagation();
+        console.log('🖱️ Button clicked - triggering celebration');
         const container = document.getElementById('celebrationContainer');
         triggerFullCelebration(container);
         animateButton(celebrationBtn);
@@ -459,6 +465,7 @@ function initCelebration() {
     celebrationBtn.addEventListener('touchstart', function(e) {
         e.preventDefault();
         e.stopPropagation();
+        console.log('👆 Button touched - triggering celebration');
         const container = document.getElementById('celebrationContainer');
         triggerFullCelebration(container);
         animateButton(celebrationBtn);
@@ -469,7 +476,7 @@ function initCelebration() {
         e.preventDefault();
     });
     
-    console.log('✅ Celebration system initialized');
+    console.log('✅ CELEBRATION SYSTEM INITIALIZED - Ready to celebrate!');
 }
 
 function animateButton(btn) {
@@ -728,7 +735,49 @@ function createBalloons(container, count = 20) {
 
 // Initialize celebration when DOM is loaded
 document.addEventListener('DOMContentLoaded', function() {
+    console.log('📍 DOM loaded - Initializing celebration');
     initCelebration();
 });
 
+// Add retry mechanism in case DOM is ready before script loads
+if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', () => {
+        setTimeout(() => initCelebration(), 100);
+    });
+} else {
+    // DOM already loaded
+    setTimeout(() => {
+        console.log('📍 Checking celebration button availability...');
+        if (!document.getElementById('celebrationBtn')) {
+            console.warn('⚠️ Button not found on immediate check, retrying...');
+            setTimeout(() => initCelebration(), 500);
+        } else {
+            initCelebration();
+        }
+    }, 100);
+}
+
 console.log('Wedding invitation website loaded successfully! 🎉');
+
+// ============================================
+// TEST FUNCTION - Call from console: testCelebration()
+// ============================================
+window.testCelebration = function() {
+    console.log('🧪 TEST CELEBRATION FUNCTION');
+    const container = document.getElementById('celebrationContainer');
+    const btn = document.getElementById('celebrationBtn');
+    
+    console.log('Container exists:', !!container);
+    console.log('Button exists:', !!btn);
+    
+    if (container && btn) {
+        console.log('✅ Both elements exist - Triggering celebration...');
+        triggerFullCelebration(container);
+    } else {
+        console.error('❌ Missing elements:');
+        if (!container) console.error('  - celebrationContainer not found');
+        if (!btn) console.error('  - celebrationBtn not found');
+    }
+};
+
+console.log('💡 TIP: Type testCelebration() in console to manually test celebration effects');
