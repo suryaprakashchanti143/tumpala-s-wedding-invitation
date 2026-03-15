@@ -421,24 +421,55 @@ window.addEventListener('scroll', optimizedScroll);
 
 function initCelebration() {
     const celebrationBtn = document.getElementById('celebrationBtn');
-    const celebrationContainer = document.getElementById('celebrationContainer');
+    let celebrationContainer = document.getElementById('celebrationContainer');
 
-    if (!celebrationBtn) return;
+    if (!celebrationBtn) {
+        console.warn('❌ Celebration button not found');
+        return;
+    }
 
-    // Handle both click and touch events
+    // Create celebration container if it doesn't exist
+    if (!celebrationContainer) {
+        celebrationContainer = document.createElement('div');
+        celebrationContainer.id = 'celebrationContainer';
+        celebrationContainer.style.cssText = `
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            pointer-events: none;
+            z-index: 9999;
+            overflow: hidden;
+        `;
+        document.body.appendChild(celebrationContainer);
+        console.log('✅ Celebration container created');
+    }
+
+    // Handle click event
     celebrationBtn.addEventListener('click', function(e) {
         e.preventDefault();
-        triggerFullCelebration(celebrationContainer);
+        e.stopPropagation();
+        const container = document.getElementById('celebrationContainer');
+        triggerFullCelebration(container);
         animateButton(celebrationBtn);
     });
 
-    // Add touch support for mobile
+    // Add touch support for mobile devices
     celebrationBtn.addEventListener('touchstart', function(e) {
         e.preventDefault();
         e.stopPropagation();
-        triggerFullCelebration(celebrationContainer);
+        const container = document.getElementById('celebrationContainer');
+        triggerFullCelebration(container);
         animateButton(celebrationBtn);
     });
+    
+    // Prevent double-trigger on touch
+    celebrationBtn.addEventListener('touchend', function(e) {
+        e.preventDefault();
+    });
+    
+    console.log('✅ Celebration system initialized');
 }
 
 function animateButton(btn) {
@@ -449,68 +480,99 @@ function animateButton(btn) {
 }
 
 function triggerFullCelebration(container) {
-    // Check if running on mobile
-    const isMobile = window.innerWidth <= 768;
-    
-    console.log('🎉 Celebration triggered!', {
-        isMobile: isMobile,
-        containerExists: !!container,
-        containerSize: container ? `${container.offsetWidth}x${container.offsetHeight}` : 'N/A',
-        viewportSize: `${window.innerWidth}x${window.innerHeight}`,
-        scrollY: window.scrollY
-    });
-
-    // Ensure container is visible
-    if (container) {
-        container.style.display = 'block';
-        container.style.visibility = 'visible';
+    // Ensure container exists
+    if (!container) {
+        container = document.getElementById('celebrationContainer');
+        if (!container) {
+            console.error('❌ Celebration container not found');
+            return;
+        }
     }
 
-    // Center position - use viewport center
+    // Advanced mobile detection (viewport + user agent)
+    const isMobileViewport = window.innerWidth <= 768 || window.innerHeight <= 600;
+    const isMobileUserAgent = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
+    const isMobile = isMobileViewport || isMobileUserAgent;
+    
+    // Detect low-end devices (smaller screens)
+    const isLowEndDevice = window.innerWidth <= 480;
+
+    console.log('🎉 CELEBRATION TRIGGERED!', {
+        isMobile: isMobile,
+        isMobileViewport: isMobileViewport,
+        isMobileUserAgent: isMobileUserAgent,
+        isLowEndDevice: isLowEndDevice,
+        viewportSize: `${window.innerWidth}x${window.innerHeight}`,
+        containerExists: !!container,
+        containerSize: `${container.offsetWidth}x${container.offsetHeight}`
+    });
+
+    // Ensure container is visible and functional
+    container.style.display = 'block';
+    container.style.visibility = 'visible';
+    container.style.pointerEvents = 'none';
+
+    // Calculate center position relative to viewport
     const centerX = window.innerWidth / 2;
     const centerY = window.innerHeight / 2;
 
-    // Adjust animation count for mobile (lighter performance)
+    // AGGRESSIVE MOBILE OPTIMIZATION
+    // Mobile: 15 confetti, 12 burst, 20 particles, 8 balloons
+    // Desktop: 40 confetti, 30 burst, 50 particles, 20 balloons
     if (isMobile) {
-        createConfetti(container, centerX, centerY, 20);  // Reduce from 40 to 20
-        setTimeout(() => createEmojiBurst(container, centerX, centerY, 15), 100);  // Reduce from 30 to 15
-        setTimeout(() => createParticles(container, 25), 150);  // Reduce from 50 to 25
-        setTimeout(() => createBalloons(container, 10), 200);  // Reduce from 20 to 10
+        console.log('📱 MOBILE MODE - Aggressive Optimization');
+        
+        // Even more aggressive for low-end devices
+        if (isLowEndDevice) {
+            console.log('📱 LOW-END DEVICE - Ultra-Light Mode');
+            createConfetti(container, centerX, centerY, 10);
+            setTimeout(() => createEmojiBurst(container, centerX, centerY, 8), 80);
+            setTimeout(() => createParticles(container, 15), 120);
+            setTimeout(() => createBalloons(container, 5), 160);
+        } else {
+            // Standard mobile aggressive optimization
+            createConfetti(container, centerX, centerY, 15);
+            setTimeout(() => createEmojiBurst(container, centerX, centerY, 12), 100);
+            setTimeout(() => createParticles(container, 20), 150);
+            setTimeout(() => createBalloons(container, 8), 200);
+        }
     } else {
+        console.log('🖥️ DESKTOP MODE - Full Effects');
         createConfetti(container, centerX, centerY, 40);
         setTimeout(() => createEmojiBurst(container, centerX, centerY, 30), 100);
         setTimeout(() => createParticles(container, 50), 150);
         setTimeout(() => createBalloons(container, 20), 200);
     }
+
+    console.log('✅ All celebration effects triggered');
 }
 
-/* Confetti Falling Effect - Mobile Optimized */
+/* Confetti Falling Effect - Aggressive Mobile Optimized */
 function createConfetti(container, startX, startY, count = 40) {
     const colors = ['🎉', '🎊', '✨', '⭐', '💫'];
     
     for (let i = 0; i < count; i++) {
-        const confetti = document.createElement('div');
+        const confetti = document.createElement('span');
         confetti.className = 'celebration-confetti';
         confetti.textContent = colors[Math.floor(Math.random() * colors.length)];
         
-        // Random angle spread
+        // Reduced spread radius for mobile
+        const isMobile = window.innerWidth <= 768;
         const angle = (Math.PI * 2 * i) / count;
-        const velocity = 2 + Math.random() * 4;
-        const tx = Math.cos(angle) * velocity * 25;
-        const ty = Math.sin(angle) * velocity * 25;
+        const velocity = isMobile ? (1.5 + Math.random() * 2.5) : (2 + Math.random() * 4);
+        const spreadMultiplier = isMobile ? 15 : 25;
+        const tx = Math.cos(angle) * velocity * spreadMultiplier;
+        const ty = Math.sin(angle) * velocity * spreadMultiplier;
         
-        // Use viewport-relative positioning with explicit z-index
-        confetti.style.cssText = `
-            position: fixed;
-            left: ${startX}px;
-            top: ${startY}px;
-            z-index: 9999;
-            pointer-events: none;
-            font-size: 1.5rem;
-            will-change: transform, opacity;
-        `;
-        
-        confetti.style.transform = `translate(${tx}px, ${ty}px)`;
+        // Aggressive mobile optimization
+        confetti.style.position = 'fixed';
+        confetti.style.left = startX + 'px';
+        confetti.style.top = startY + 'px';
+        confetti.style.zIndex = '9999';
+        confetti.style.pointerEvents = 'none';
+        confetti.style.fontSize = '1.5rem';
+        confetti.style.willChange = 'transform, opacity';
+        confetti.style.transform = 'translate(' + tx + 'px, ' + ty + 'px)';
         
         const duration = 2.5 + Math.random() * 1;
         confetti.style.animationDuration = duration + 's';
@@ -519,38 +581,42 @@ function createConfetti(container, startX, startY, count = 40) {
         
         container.appendChild(confetti);
         
-        setTimeout(() => {
+        // Immediate cleanup after animation completes
+        const timeoutId = setTimeout(() => {
             if (confetti && confetti.parentNode) {
                 confetti.remove();
             }
         }, duration * 1000 + 100);
     }
+    
+    console.log('✨ Confetti created: ' + count + ' particles');
 }
 
-/* Emoji Burst - Quick explosion effect */
+/* Emoji Burst - Quick explosion effect - Mobile Optimized */
 function createEmojiBurst(container, startX, startY, count = 30) {
     const emojis = ['🎉', '🎊', '💝', '❤️', '✨', '🌟', '⭐', '💫'];
+    const isMobile = window.innerWidth <= 768;
     
     for (let i = 0; i < count; i++) {
-        const burst = document.createElement('div');
+        const burst = document.createElement('span');
         burst.className = 'celebration-burst';
         burst.textContent = emojis[Math.floor(Math.random() * emojis.length)];
         
-        // Radial burst pattern
+        // Reduced distance spread for mobile
         const angle = (Math.PI * 2 * i) / count;
-        const distance = Math.min(150 + Math.random() * 150, window.innerWidth / 3);
+        const maxDistance = isMobile ? 100 : 150;
+        const randomDistance = maxDistance + Math.random() * (isMobile ? 80 : 150);
+        const distance = Math.min(randomDistance, window.innerWidth / 3);
         const tx = Math.cos(angle) * distance;
         const ty = Math.sin(angle) * distance;
         
-        burst.style.cssText = `
-            position: fixed;
-            left: ${startX}px;
-            top: ${startY}px;
-            z-index: 9999;
-            pointer-events: none;
-            font-size: 2.5rem;
-            will-change: transform, opacity;
-        `;
+        burst.style.position = 'fixed';
+        burst.style.left = startX + 'px';
+        burst.style.top = startY + 'px';
+        burst.style.zIndex = '9999';
+        burst.style.pointerEvents = 'none';
+        burst.style.fontSize = '2.5rem';
+        burst.style.willChange = 'transform, opacity';
         
         burst.style.setProperty('--tx', tx + 'px');
         burst.style.setProperty('--ty', ty + 'px');
@@ -560,97 +626,104 @@ function createEmojiBurst(container, startX, startY, count = 30) {
         
         container.appendChild(burst);
         
-        setTimeout(() => {
+        const timeoutId = setTimeout(() => {
             if (burst && burst.parentNode) {
                 burst.remove();
             }
         }, 1300);
     }
+    
+    console.log('💥 Emoji burst created: ' + count + ' particles');
 }
 
-/* Celebration Particles - Sparkle Effect */
+/* Celebration Particles - Sparkle Effect - Mobile Optimized */
 function createParticles(container, count = 50) {
     const particles = ['✨', '💫', '⭐', '🌟', '💥'];
+    const isMobile = window.innerWidth <= 768;
     
     for (let i = 0; i < count; i++) {
-        const particle = document.createElement('div');
+        const particle = document.createElement('span');
         particle.className = 'celebration-particle';
         particle.textContent = particles[Math.floor(Math.random() * particles.length)];
         
-        const randomX = Math.random() * window.innerWidth;
-        const randomY = Math.random() * window.innerHeight;
-        const px = (Math.random() - 0.5) * 150;
+        // Reduced spread for mobile
+        const viewportMargin = isMobile ? 50 : 100;
+        const randomX = Math.random() * (window.innerWidth - viewportMargin * 2) + viewportMargin;
+        const randomY = Math.random() * (window.innerHeight - viewportMargin * 2) + viewportMargin;
+        const px = (Math.random() - 0.5) * (isMobile ? 80 : 150);
         
-        particle.style.cssText = `
-            position: fixed;
-            left: ${randomX}px;
-            top: ${randomY}px;
-            z-index: 9999;
-            pointer-events: none;
-            font-size: 1.8rem;
-            will-change: transform, opacity;
-        `;
+        particle.style.position = 'fixed';
+        particle.style.left = randomX + 'px';
+        particle.style.top = randomY + 'px';
+        particle.style.zIndex = '9999';
+        particle.style.pointerEvents = 'none';
+        particle.style.fontSize = '1.8rem';
+        particle.style.willChange = 'transform, opacity';
         
         particle.style.setProperty('--px', px + 'px');
         
-        const duration = 1.5 + Math.random() * 1;
+        const duration = isMobile ? (1 + Math.random() * 0.8) : (1.5 + Math.random() * 1);
         particle.style.animationDuration = duration + 's';
         particle.style.animationName = 'particleFloat';
         particle.style.animationFillMode = 'forwards';
         
-        const delay = Math.random() * 0.3;
+        const delay = Math.random() * (isMobile ? 0.15 : 0.3);
         particle.style.animationDelay = delay + 's';
         
         container.appendChild(particle);
         
-        setTimeout(() => {
+        const timeoutId = setTimeout(() => {
             if (particle && particle.parentNode) {
                 particle.remove();
             }
         }, (duration + delay) * 1000 + 100);
     }
+    
+    console.log('✨ Particles created: ' + count + ' sparkles');
 }
 
-/* Balloons Animation - Slow Rising */
+/* Balloons Animation - Slow Rising - Mobile Optimized */
 function createBalloons(container, count = 20) {
     const balloonColors = ['🎈', '🎈', '🎈', '🎉', '🎊'];
+    const isMobile = window.innerWidth <= 768;
     
     for (let i = 0; i < count; i++) {
-        const balloon = document.createElement('div');
+        const balloon = document.createElement('span');
         balloon.className = 'celebration-balloon';
         balloon.textContent = balloonColors[Math.floor(Math.random() * balloonColors.length)];
         
-        const startX = Math.random() * window.innerWidth;
-        const floatAmount = (Math.random() - 0.5) * 80;
+        // Keep balloons within viewport bounds
+        const startX = Math.random() * (window.innerWidth - 40) + 20;
+        const floatAmount = (Math.random() - 0.5) * (isMobile ? 50 : 80);
         
-        balloon.style.cssText = `
-            position: fixed;
-            left: ${startX}px;
-            bottom: -100px;
-            z-index: 9999;
-            pointer-events: none;
-            font-size: 2rem;
-            will-change: transform, opacity;
-        `;
+        balloon.style.position = 'fixed';
+        balloon.style.left = startX + 'px';
+        balloon.style.bottom = '-100px';
+        balloon.style.zIndex = '9999';
+        balloon.style.pointerEvents = 'none';
+        balloon.style.fontSize = '2rem';
+        balloon.style.willChange = 'transform, opacity';
         
         balloon.style.setProperty('--float', floatAmount + 'px');
         
-        const duration = 4 + Math.random() * 2;
+        const duration = isMobile ? (3 + Math.random() * 1.5) : (4 + Math.random() * 2);
         balloon.style.animationDuration = duration + 's';
         balloon.style.animationName = 'balloonRise';
         balloon.style.animationFillMode = 'forwards';
         
-        const delay = i * 0.1;
+        const delay = i * 0.08;
         balloon.style.animationDelay = delay + 's';
         
         container.appendChild(balloon);
         
-        setTimeout(() => {
+        const timeoutId = setTimeout(() => {
             if (balloon && balloon.parentNode) {
                 balloon.remove();
             }
         }, (duration + delay) * 1000 + 100);
     }
+    
+    console.log('🎈 Balloons created: ' + count + ' balloons');
 }
 
 // Initialize celebration when DOM is loaded
