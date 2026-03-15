@@ -1,0 +1,273 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TUMPALA's Wedding Invitation - A Joyous Celebration</title>
+    
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600;700&family=Lora:wght@400;600&family=Montserrat:wght@300;400;600;700&display=swap" rel="stylesheet">
+    
+    <!-- FontAwesome Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <!-- AOS (Animate On Scroll) -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/aos/2.3.4/aos.css" rel="stylesheet">
+    
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <!-- Navigation Bar -->
+    <nav class="navbar">
+        <div class="nav-container">
+            <div class="nav-logo">
+                <span class="wedding-emoji">💍</span>
+                TUMPALA's Wedding Invitation
+            </div>
+            <ul class="nav-menu">
+                <li><a href="#home" class="nav-link">Home</a></li>
+                <li><a href="#details" class="nav-link">Details</a></li>
+                <li><a href="#venue" class="nav-link">Venue</a></li>
+                <li><a href="#lunch" class="nav-link">Lunch</a></li>
+                <li><a href="#message" class="nav-link">Message</a></li>
+            </ul>
+            <div class="hamburger">
+                <span></span>
+                <span></span>
+                <span></span>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Background Effect -->
+    <div class="background-stars"></div>
+
+    <!-- Hero Section -->
+    <section id="home" class="hero-section" style="background-image: url('images/image1.jpg'); background-size: cover; background-position: center; background-attachment: fixed;">
+        <div class="hero-overlay"></div>
+        <div class="hero-content" data-aos="fade-up" data-aos-duration="1000">
+            <div class="hero-emoji">💍✨</div>
+            <h1 class="hero-title">With great joy, I invite you to my wedding!</h1>
+            <p class="hero-subtitle">Let us celebrate this beautiful occasion together</p>
+            <button class="cta-button" onclick="document.getElementById('details').scrollIntoView({behavior: 'smooth'})">
+                View Details
+                <span class="button-glow"></span>
+            </button>
+        </div>
+    </section>
+
+    <!-- Wedding Details Section -->
+    <section id="details" class="details-section">
+        <div class="section-container">
+            <h2 class="section-title" data-aos="fade-up">Wedding Details</h2>
+            
+            <div class="details-grid">
+                <!-- Wedding Date Card with Image -->
+                <div class="detail-card image-card" data-aos="fade-up" data-aos-delay="100">
+                    <div class="card-image-wrapper" style="background-image: url('images/image7.jpg');">
+                        <div class="card-image-overlay"></div>
+                        <div class="card-content-overlay">
+                            <h3>Wedding Date</h3>
+                            <p class="detail-value">Night of April 8th</p>
+                            <p class="detail-label">Evening Celebration</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Muhuratham Card with Image -->
+                <div class="detail-card image-card" data-aos="fade-up" data-aos-delay="200">
+                    <div class="card-image-wrapper" style="background-image: url('images/image3.jpg');">
+                        <div class="card-image-overlay"></div>
+                        <div class="card-content-overlay">
+                            <h3>Muhuratham</h3>
+                            <p class="detail-value">12:27 AM</p>
+                            <p class="detail-label">April 9th, Auspicious Time</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Divine Grace Card with Image -->
+                <div class="detail-card image-card" data-aos="fade-up" data-aos-delay="300">
+                    <div class="card-image-wrapper" style="background-image: url('images/image8.jpg');">
+                        <div class="card-image-overlay"></div>
+                        <div class="card-content-overlay">
+                            <h3>With divine grace</h3>
+                            <p class="detail-value">and</p>
+                            <p class="detail-label">your blessings</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Message Card -->
+            <div class="message-card" data-aos="fade-up" data-aos-delay="400">
+                <div class="message-icon">
+                    <i class="fas fa-heart"></i>
+                </div>
+                <p class="message-text">
+                    "Your presence and blessings would mean a lot to us on this special day. 
+                    I would be very happy to see you there!"
+                </p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Venue Section -->
+    <section id="venue" class="venue-section">
+        <div class="section-container">
+            <h2 class="section-title" data-aos="fade-up">Wedding Venue</h2>
+            
+            <div class="venue-content" data-aos="fade-up" data-aos-delay="100">
+                <!-- Venue Card with Image on Right -->
+                <div class="venue-card-wrapper">
+                    <div class="venue-card-content">
+                        <div class="venue-icon">
+                            <i class="fas fa-gopuram"></i>
+                        </div>
+                        <h3>Marriage Venue</h3>
+                        <p class="venue-name">Dwaraka Tirumala</p>
+                        <p class="venue-subtitle">The Main "Chinna Tirupati"</p>
+                        
+                        <a href="https://maps.app.goo.gl/xxt5cyj6Guo1ZtV47" target="_blank" class="venue-button">
+                            <i class="fas fa-map-location-dot"></i>
+                            View on Google Maps
+                        </a>
+                    </div>
+                    <div class="venue-image-container">
+                        <img src="images/image2.jpg" alt="Dwaraka Tirumala Temple" class="venue-image">
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Lunch Section -->
+    <section id="lunch" class="lunch-section">
+        <div class="section-container">
+            <h2 class="section-title" data-aos="fade-up">Lunch Celebration</h2>
+            
+            <div class="lunch-content">
+                <!-- Lunch Time Card with Image -->
+                <div class="lunch-card image-card" data-aos="fade-up" data-aos-delay="100" style="background-image: url('images/image4.jpg');">
+                    <div class="card-image-overlay"></div>
+                    <div class="lunch-card-content">
+                        <div class="lunch-icon">
+                            <i class="fas fa-clock"></i>
+                        </div>
+                        <h3>Lunch Time</h3>
+                        <p class="lunch-detail">April 8th</p>
+                        <p class="lunch-time">12:00 PM onwards</p>
+                    </div>
+                </div>
+
+                <!-- Lunch Location Card with Image -->
+                <div class="lunch-card image-card" data-aos="fade-up" data-aos-delay="200" style="background-image: url('images/image6.jpg');">
+                    <div class="card-image-overlay"></div>
+                    <div class="lunch-card-content">
+                        <div class="lunch-icon">
+                            <i class="fas fa-location-dot"></i>
+                        </div>
+                        <h3>Lunch Location</h3>
+                        <p class="lunch-detail">Home Address</p>
+                        <a href="https://maps.app.goo.gl/6JUSTqy7iHha4swE7" target="_blank" class="lunch-button">
+                            <i class="fas fa-utensils"></i>
+                            View Location
+                        </a>
+                    </div>
+                </div>
+
+                <!-- Delicious Feast Card with Image -->
+                <div class="lunch-card image-card" data-aos="fade-up" data-aos-delay="300" style="background-image: url('images/image5.jpg');">
+                    <div class="card-image-overlay"></div>
+                    <div class="lunch-card-content">
+                        <div class="lunch-icon">
+                            <i class="fas fa-utensils"></i>
+                        </div>
+                        <h3>Delicious Feast</h3>
+                        <p class="lunch-detail">Authentic Culinary Delights</p>
+                        <p class="lunch-time">A celebration of flavors</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Decorative Food Elements -->
+            <div class="food-decorations">
+                <span class="food-emoji">🍲</span>
+                <span class="food-emoji">🥘</span>
+                <span class="food-emoji">🍛</span>
+                <span class="food-emoji">🥗</span>
+                <span class="food-emoji">🍲</span>
+            </div>
+        </div>
+    </section>
+
+    <!-- Celebration Message Section -->
+    <section id="message" class="celebration-section" style="background-image: url('images/image11.gif'); background-size: cover; background-position: center; background-attachment: scroll;">
+        <div class="section-container">
+            <div class="celebration-content" data-aos="zoom-in" data-aos-duration="1000">
+                <h2 class="celebration-title">
+                    Looking forward to celebrating
+                </h2>
+                <h2 class="celebration-title highlight">
+                    this happy occasion with you!
+                </h2>
+                
+                <div class="sparkle-container">
+                    <span class="sparkle">✨</span>
+                    <span class="sparkle">💫</span>
+                    <span class="sparkle">✨</span>
+                    <span class="sparkle">💫</span>
+                    <span class="sparkle">✨</span>
+                </div>
+
+                <p class="celebration-emoji">🎉🎊🎉</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Blessing & Wishes Section -->
+    <section id="blessing" class="blessing-section">
+        <div class="section-container">
+            <h2 class="section-title" data-aos="fade-up">Share Your Blessings</h2>
+            
+            <div class="blessing-card" data-aos="zoom-in" data-aos-delay="100">
+                <div class="blessing-icon">💝</div>
+                <h3 class="blessing-title">Click Here to Wish Us</h3>
+                <p class="blessing-text">
+                    Send your heartfelt blessings and celebrate this joyous moment with us!
+                </p>
+                <button class="blessing-button" id="celebrationBtn">
+                    <i class="fas fa-heart"></i>
+                    Give Your Blessings
+                </button>
+            </div>
+        </div>
+        
+        <!-- Celebration Emojis Container -->
+        <div id="celebrationContainer"></div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="footer-divider"></div>
+        <div class="footer-content">
+            <p class="footer-message">Thank you for being part of our joy</p>
+            <div class="footer-icons">
+                <span>✨</span>
+                <span>💍</span>
+                <span>✨</span>
+            </div>
+            <p class="footer-text">
+                With love and gratitude,<br>
+                Looking forward to your precious presence
+            </p>
+            <p class="footer-year">&copy; 2026 | A Beautiful Beginning</p>
+        </div>
+    </footer>
+
+    <!-- Scripts -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/aos/2.3.4/aos.js"></script>
+    <script src="script.js"></script>
+</body>
+</html>
