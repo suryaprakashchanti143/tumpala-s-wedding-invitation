@@ -425,23 +425,41 @@ function initCelebration() {
 
     if (!celebrationBtn) return;
 
-    celebrationBtn.addEventListener('click', () => {
+    // Handle both click and touch events
+    celebrationBtn.addEventListener('click', function(e) {
+        e.preventDefault();
         triggerFullCelebration(celebrationContainer);
-        
-        // Add button animation feedback
-        celebrationBtn.style.transform = 'scale(0.95)';
-        setTimeout(() => {
-            celebrationBtn.style.transform = 'scale(1)';
-        }, 200);
+        animateButton(celebrationBtn);
+    });
+
+    // Add touch support for mobile
+    celebrationBtn.addEventListener('touchstart', function(e) {
+        e.preventDefault();
+        e.stopPropagation();
+        triggerFullCelebration(celebrationContainer);
+        animateButton(celebrationBtn);
     });
 }
 
+function animateButton(btn) {
+    btn.style.transform = 'scale(0.95)';
+    setTimeout(() => {
+        btn.style.transform = 'scale(1)';
+    }, 200);
+}
+
 function triggerFullCelebration(container) {
+    // Debug log
+    console.log('🎉 Celebration triggered!', {
+        containerExists: !!container,
+        containerSize: container ? `${container.offsetWidth}x${container.offsetHeight}` : 'N/A',
+        viewportSize: `${window.innerWidth}x${window.innerHeight}`
+    });
+
     // Get button position for burst effect
     const btn = document.getElementById('celebrationBtn');
-    const rect = btn.getBoundingClientRect();
-    const centerX = rect.left + rect.width / 2;
-    const centerY = rect.top + rect.height / 2;
+    const centerX = window.innerWidth / 2;
+    const centerY = window.innerHeight / 2;
 
     // Trigger all celebration effects simultaneously
     createConfetti(container, centerX, centerY);
@@ -465,16 +483,21 @@ function createConfetti(container, startX, startY) {
         const tx = Math.cos(angle) * velocity * 30;
         const ty = Math.sin(angle) * velocity * 30;
         
+        // Use viewport-relative positioning
+        confetti.style.position = 'fixed';
         confetti.style.left = startX + 'px';
         confetti.style.top = startY + 'px';
         confetti.style.transform = `translate(${tx}px, ${ty}px)`;
         
         const duration = 2.5 + Math.random() * 1;
         confetti.style.animationDuration = duration + 's';
+        confetti.style.animationName = 'confettiFall';
         
         container.appendChild(confetti);
         
-        setTimeout(() => confetti.remove(), duration * 1000);
+        setTimeout(() => {
+            if (confetti.parentNode) confetti.remove();
+        }, duration * 1000);
     }
 }
 
@@ -493,14 +516,18 @@ function createEmojiBurst(container, startX, startY) {
         const tx = Math.cos(angle) * distance;
         const ty = Math.sin(angle) * distance;
         
+        burst.style.position = 'fixed';
         burst.style.left = startX + 'px';
         burst.style.top = startY + 'px';
         burst.style.setProperty('--tx', tx + 'px');
         burst.style.setProperty('--ty', ty + 'px');
+        burst.style.animationName = 'emojiBurst';
         
         container.appendChild(burst);
         
-        setTimeout(() => burst.remove(), 1200);
+        setTimeout(() => {
+            if (burst.parentNode) burst.remove();
+        }, 1200);
     }
 }
 
@@ -517,19 +544,23 @@ function createParticles(container) {
         const randomY = Math.random() * window.innerHeight;
         const px = (Math.random() - 0.5) * 200;
         
+        particle.style.position = 'fixed';
         particle.style.left = randomX + 'px';
         particle.style.top = randomY + 'px';
         particle.style.setProperty('--px', px + 'px');
         
         const duration = 1.5 + Math.random() * 1;
         particle.style.animationDuration = duration + 's';
+        particle.style.animationName = 'particleFloat';
         
         const delay = Math.random() * 0.3;
         particle.style.animationDelay = delay + 's';
         
         container.appendChild(particle);
         
-        setTimeout(() => particle.remove(), (duration + delay) * 1000);
+        setTimeout(() => {
+            if (particle.parentNode) particle.remove();
+        }, (duration + delay) * 1000);
     }
 }
 
@@ -545,19 +576,23 @@ function createBalloons(container) {
         const startX = Math.random() * window.innerWidth;
         const floatAmount = (Math.random() - 0.5) * 100;
         
+        balloon.style.position = 'fixed';
         balloon.style.left = startX + 'px';
         balloon.style.bottom = '-100px';
         balloon.style.setProperty('--float', floatAmount + 'px');
         
         const duration = 4 + Math.random() * 2;
         balloon.style.animationDuration = duration + 's';
+        balloon.style.animationName = 'balloonRise';
         
         const delay = i * 0.1;
         balloon.style.animationDelay = delay + 's';
         
         container.appendChild(balloon);
         
-        setTimeout(() => balloon.remove(), (duration + delay) * 1000);
+        setTimeout(() => {
+            if (balloon.parentNode) balloon.remove();
+        }, (duration + delay) * 1000);
     }
 }
 
