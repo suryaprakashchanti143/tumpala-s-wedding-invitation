@@ -1148,14 +1148,13 @@ body {
     background: linear-gradient(135deg, var(--color-gold) 0%, var(--color-gold-light) 100%);
     color: var(--color-brown);
     border: 3px solid var(--color-brown);
-    font-size: 1.5rem;
+    font-size: 2rem;
     cursor: pointer;
     transition: all var(--transition-smooth);
     box-shadow: 0 8px 25px rgba(212, 175, 55, 0.4);
     display: flex;
     align-items: center;
     justify-content: center;
-    gap: 0.3rem;
     font-weight: 700;
     position: relative;
     overflow: hidden;

@@ -280,24 +280,16 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/aos/2.3.4/aos.js"></script>
     <script src="script.js"></script>
     
-    <!-- Background Music Player -->
+    <!-- Background Music Player (Hidden) -->
     <audio id="bgmusic" preload="auto" loop>
         <source src="Court_Bgm.mp3" type="audio/mpeg">
         Your browser does not support the audio element.
     </audio>
 
-    <div class="music-player">
-        <button id="musicToggleBtn" class="music-toggle-btn" title="Toggle Music">
-            <i class="fas fa-music"></i>
-            <span class="music-status">🔊</span>
-        </button>
-    </div>
-
     <script>
-        // Music Player Initialization
+        // Music Player Initialization - Auto-play on page load
         function initMusicPlayer() {
             const audio = document.getElementById('bgmusic');
-            const toggleBtn = document.getElementById('musicToggleBtn');
             let isPlaying = false;
 
             // Try to autoplay on page load
@@ -307,59 +299,14 @@
                     playPromise
                         .then(() => {
                             isPlaying = true;
-                            updateMusicButton();
                             console.log('✅ Music auto-playing');
                         })
                         .catch(error => {
                             console.log('⚠️ Autoplay blocked - user interaction required', error);
                             isPlaying = false;
-                            updateMusicButton();
                         });
                 }
             }
-
-            // Toggle music on button click
-            toggleBtn.addEventListener('click', (e) => {
-                e.preventDefault();
-                e.stopPropagation();
-                
-                if (isPlaying) {
-                    audio.pause();
-                    isPlaying = false;
-                } else {
-                    audio.play().catch(err => console.log('Play error:', err));
-                    isPlaying = true;
-                }
-                updateMusicButton();
-            });
-
-            // Update button appearance
-            function updateMusicButton() {
-                const status = toggleBtn.querySelector('.music-status');
-                if (isPlaying) {
-                    toggleBtn.classList.add('playing');
-                    status.textContent = '🔊';
-                } else {
-                    toggleBtn.classList.remove('playing');
-                    status.textContent = '🔇';
-                }
-            }
-
-            // Handle audio state changes
-            audio.addEventListener('play', () => {
-                isPlaying = true;
-                updateMusicButton();
-            });
-
-            audio.addEventListener('pause', () => {
-                isPlaying = false;
-                updateMusicButton();
-            });
-
-            audio.addEventListener('ended', () => {
-                isPlaying = false;
-                updateMusicButton();
-            });
 
             // Attempt to play music when page loads
             setTimeout(() => attemptAutoPlay(), 500);
